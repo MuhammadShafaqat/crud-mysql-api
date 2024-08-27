@@ -18,12 +18,15 @@ app.get('/employees', (req, res)=>{
 // post request
 app.post('/employees', (req, res)=>{
     var emp = req.body;
+    if (!emp.name || !emp.salary) {
+        return res.status(400).send({ error: 'Name and Salary are required' });
+    }
     var empData = [emp.name, emp.salary]
     connection.query('INSERT INTO employee(name, salary) values(?)',[empData], (err, rows)=>{
         if (err) {
             console.log(err)
         } else {
-            // console.log(rows)
+            console.log(rows)
             res.send(rows);
         }
     })
